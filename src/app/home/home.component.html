@@ -1,0 +1,229 @@
+<section class="search-form">
+  <div class="row">
+    <div class="col-6">
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch(searchForm.value)">
+        <div class="input-group">
+          <input
+            formControlName="q"
+            type="text"
+            class="form-control"
+            placeholder="search here..."
+          />
+          <button class="btn btn-outline-secondary" type="submit">
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<section *ngIf="searchResult" class="search-result">
+  <div class="row">
+    <div class="col-8">
+      <!---search result part-->
+      <div *ngIf="searchInfo" class="search-info">
+        <p>
+          About {{ searchInfo?.total_results }} results ({{
+            searchInfo?.time_taken_displayed
+          }}
+          seconds)
+        </p>
+      </div>
+      <div *ngIf="organicResult" class="organic-result">
+        <ul class="list-unstyled">
+          <li *ngFor="let item of organicResult; let i = index">
+            <div *ngIf="i == 0">
+              <a [href]="item.link">{{ item.displayed_link }}</a
+              ><br />
+              <a class="title" [href]="item.link">{{ item.title }}</a>
+              <p class="desc">
+                {{ item.snippet }}
+              </p>
+              <ul class="list-inline">
+                <li
+                  class="list-inline-item"
+                  *ngFor="let item of item?.sitelinks?.expanded"
+                >
+                  <a [href]="item.link">{{ item.title }}</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="twitterResult" class="twitter-result">
+        <a [href]="twitterResult?.link">{{ twitterResult?.displayed_link }}</a
+        ><br />
+        <a class="title" [href]="twitterResult?.link">{{
+          twitterResult?.title
+        }}</a>
+        <ul class="list-inline">
+          <li
+            class="list-inline-item col-3"
+            *ngFor="let item of twitterResult?.tweets; let i = index"
+          >
+            <div>
+              <a [href]="item.link">
+                <img [src]="item.thumbnail" alt="" />
+                <span class="desc">{{ item.snippet }}</span>
+                <span class="publish-date"
+                  >Twitter: {{ item.published_date }}</span
+                >
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="organicResult" class="organic-result list">
+        <ul class="list-unstyled">
+          <li *ngFor="let item of organicResult; let i = index">
+            <div *ngIf="i > 0">
+              <a [href]="item.link">{{ item.displayed_link }}</a
+              ><br />
+              <a class="title" [href]="item.link">{{ item.title }}</a>
+              <p class="desc">
+                {{ item.snippet }}
+              </p>
+              <ul class="list-inline">
+                <li
+                  class="list-inline-item"
+                  *ngFor="let item of item?.sitelinks?.expanded"
+                >
+                  <a [href]="item.link">{{ item.title }}</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-4">
+      <div *ngIf="knowledgeGraph" class="knowledge-part">
+        <div class="card">
+          <div class="card-body">
+            <ul class="list-inline">
+              <li
+                *ngFor="
+                  let item of knowledgeGraph?.header_images;
+                  let i = index
+                "
+                class="list-inline-item"
+              >
+                <div *ngIf="i == 0">
+                  <a [href]="item.source">
+                    <img [src]="item.image" alt="" />
+                  </a>
+                </div>
+              </li>
+            </ul>
+            <h2>{{ knowledgeGraph?.title }}</h2>
+            <p>{{ knowledgeGraph?.type }}</p>
+            <hr />
+            <p>{{ knowledgeGraph?.description }}</p>
+            <div class="local-map">
+              <a [href]="knowledgeGraph?.link">
+                <img [src]="knowledgeGraph?.image" alt="" />
+              </a>
+            </div>
+            <p><span>Area</span>: {{ knowledgeGraph?.area }}</p>
+            <ul class="list-inline">
+              <li
+                class="list-inline-item"
+                *ngFor="let item of knowledgeGraph?.area_links"
+              >
+                <a [href]="item.link">{{ item.text }}</a>
+              </li>
+            </ul>
+            <p><span>Elevation</span>: {{ knowledgeGraph?.elevation }}</p>
+            <ul class="list-inline">
+              <li
+                class="list-inline-item"
+                *ngFor="let item of knowledgeGraph?.elevation_links"
+              >
+                <a [href]="item.link">{{ item.text }}</a>
+              </li>
+            </ul>
+            <p><span>Local Time</span>: {{ knowledgeGraph?.local_time }}</p>
+            <ul class="list-inline">
+              <li
+                class="list-inline-item"
+                *ngFor="let item of knowledgeGraph?.local_time_links"
+              >
+                <a [href]="item.link">{{ item.text }}</a>
+              </li>
+            </ul>
+            <p><span>Weather</span>: {{ knowledgeGraph?.weather }}</p>
+            <ul class="list-inline">
+              <li
+                class="list-inline-item"
+                *ngFor="let item of knowledgeGraph?.weather_links"
+              >
+                <a [href]="item.link">{{ item.text }}</a>
+              </li>
+            </ul>
+            <p><span>Population</span>: {{ knowledgeGraph?.population }}</p>
+            <ul class="list-inline">
+              <li
+                class="list-inline-item"
+                *ngFor="let item of knowledgeGraph?.population_links"
+              >
+                <a [href]="item.link">{{ item.text }}</a>
+              </li>
+            </ul>
+            <p>
+              <span>Neighborhoods</span>: {{ knowledgeGraph?.neighborhoods }}
+            </p>
+            <ul class="list-inline">
+              <li
+                class="list-inline-item"
+                *ngFor="let item of knowledgeGraph?.neighborhoods_links"
+              >
+                <a [href]="item.link">{{ item.text }}</a>
+              </li>
+            </ul>
+            <hr />
+            <div *ngIf="knowledgeGraph?.colleges_and_universities" class="colleges">
+              <h4>Colleges and Universities</h4>
+              <ul class="list-inline">
+                <li
+                  class="list-inline-item"
+                  *ngFor="
+                    let item of knowledgeGraph?.colleges_and_universities;
+                    let i = index
+                  "
+                >
+                  <div *ngIf="i < 4">
+                    <a [href]="item.link">
+                      <img [src]="item.image" alt="" />
+                      <span>{{ item.name }}</span>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <hr />
+            <div class="people-search">
+              <h4>People also search for</h4>
+              <ul class="list-inline">
+                <li
+                  class="list-inline-item"
+                  *ngFor="
+                    let item of knowledgeGraph?.people_also_search_for;
+                    let i = index
+                  "
+                >
+                  <div *ngIf="i < 4">
+                    <a [href]="item.link">
+                      <img [src]="item.image" alt="" />
+                      <span>{{ item.name }}</span>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

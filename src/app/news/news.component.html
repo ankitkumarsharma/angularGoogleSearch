@@ -1,0 +1,49 @@
+<section class="search-form">
+  <div class="row">
+    <div class="col-6">
+      <form [formGroup]="searchForm" (ngSubmit)="onSearch(searchForm.value)">
+        <div class="input-group">
+          <input
+            formControlName="q"
+            type="text"
+            class="form-control"
+            placeholder="search here..."
+          />
+          <button class="btn btn-outline-secondary" type="submit">
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<section *ngIf="searchResult" class="search-result">
+  <div class="row">
+    <div class="col-8">
+      <!---search result part-->
+      <div *ngIf="searchInfo" class="search-info">
+        <p>
+          About {{ searchInfo?.total_results }} results ({{
+            searchInfo?.time_taken_displayed
+          }}
+          seconds)
+        </p>
+      </div>
+      <div *ngIf="newsResults" class="news-results">
+        <a [href]="item.link" *ngFor="let item of newsResults" class="news-item">
+          <div class="row">
+            <div class="col-9">
+              <p class="source">{{item.source}}</p>
+              <a class="title" [href]="item.link">{{item.title}}</a>
+              <p class="desc">{{item.snippet}}</p>
+              <p class="date">{{item.date}}</p>
+            </div>
+            <div class="col-3 text-right">
+              <img [src]="item.thumbnail" alt="">
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
